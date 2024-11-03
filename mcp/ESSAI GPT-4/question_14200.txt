@@ -1,0 +1,84 @@
+**Question 1:**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Technique ID:** T1193
+
+Which of the following actions is considered an Origin Validation Error in MITRE ATT&CK?
+
+A. Failing to verify the authenticity of a certificate
+B. Accepting DNS updates from untrusted hosts
+C. Using a secure protocol to transfer data
+D. Logging reverse DNS names in plaintext
+
+**Correct Answer:** B
+
+**Explanation:** T1193 (Origin Validation Error) involves accepting input or communications from an unauthorized source or failing to authenticate the origin of a message. In this case, accepting DNS updates from untrusted hosts is an example of origin validation error.
+
+**Question 2:**
+
+**MITRE ATT&CK Platform:** ICS
+
+**Technique ID:** T1208
+
+A process automation system typically utilizes programmable logic controllers (PLCs) for communication. Which of the following communication protocols, if implemented without proper origin validation, can lead to an Origin Validation Error?
+
+A. Modbus
+B. BACnet
+C. MQTT
+D. OPC UA
+
+**Correct Answer:** A
+
+**Explanation:** T1208 (Cleartext Protocol) refers to the use of unencrypted protocols that provide no protection for transmitted data. If Modbus, an unencrypted protocol, is used without origin validation, it can allow unauthorized entities to inject malicious commands into the system.
+
+**Question 3:**
+
+**MITRE ATT&CK Platform:** Mobile
+
+**Technique ID:** T1023
+
+When developing a mobile application, which of the following practices can help mitigate Origin Validation Errors?
+
+A. Using an HTTPS certificate for secure web requests
+B. Validating the sender's email address in email attachments
+C. Sanitizing user input for special characters
+D. Encrypting data stored on the device
+
+**Correct Answer:** A
+
+**Explanation:** T1023 (Unrestricted File Upload) involves uploading files without proper validation and can lead to origin validation errors. Using an HTTPS certificate, which encrypts data in transit, helps protect against unauthorized file uploads.
+
+**Question 4:**
+
+**MITRE ATT&CK Platform:** All
+
+**Technique ID:** T1556
+
+Which of the following is NOT a common consequence of an Origin Validation Error?
+
+A. Gaining unauthorized access to assets
+B. Elevating privileges
+C. Denial of service attacks
+D. Information leakage
+
+**Correct Answer:** C
+
+**Explanation:** While Origin Validation Errors can lead to unauthorized access, privilege escalation, and information leakage, they typically do not directly cause denial of service attacks.
+
+**Question 5:**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Technique ID:** T1209
+
+When implementing network segmentation, which of the following deployment models can help mitigate Origin Validation Errors?
+
+A. Layer 2 switching
+B. Router-based access control lists (ACLs)
+C. Network virtualization
+D. Software-defined networking (SDN)
+
+**Correct Answer:** B
+
+**Explanation:** T1209 (Security Function Bypass) involves bypassing security controls by exploiting weaknesses in their implementation. Router-based ACLs, which allow traffic to be filtered based on various criteria, can help mitigate origin validation errors by preventing unauthorized access.

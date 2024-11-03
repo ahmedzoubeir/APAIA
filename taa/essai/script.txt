@@ -1,0 +1,191 @@
+import requests
+from bs4 import BeautifulSoup
+import csv
+
+# Function to scrape paragraphs, spans, and text from a given URL
+def scrape_content(url):
+    try:
+        # Send a GET request to the URL
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for bad responses
+
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Extract text from <p> (paragraphs)
+        paragraphs = [p.get_text(strip=True) for p in soup.find_all('p')]
+
+        # Extract text from <span> elements
+        spans = [span.get_text(strip=True) for span in soup.find_all('span')]
+
+        # Extract general text not within specific tags
+        body_text = soup.get_text(strip=True)
+
+        return {
+            "URL": url,
+            "Paragraphs": " ".join(paragraphs),
+            "Spans": " ".join(spans),
+            "Text": body_text
+        }
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching {url}: {e}")
+        return {
+            "URL": url,
+            "Paragraphs": "",
+            "Spans": "",
+            "Text": ""
+        }
+
+# List of URLs to scrape
+urls = [
+    "https://www.proofpoint.com/us/blog/threat-insight/bumblebee-buzzes-back-black",
+    "https://www.seqrite.com/blog/sidecopys-multi-platform-onslaught-leveraging-winrar-zero-day-and-linux-variant-of-ares-rat/",
+    "https://csirt-cti.net/2024/01/23/stately-taurus-targets-myanmar/",
+    "https://unit42.paloaltonetworks.com/stately-taurus-attacks-se-asian-government/",
+    "https://medium.com/@zyadlzyatsoc/comprehensive-analysis-of-emotet-malware-part-1-by-zyad-elzyat-35d5cf33a3c0",
+    "https://www.fortinet.com/blog/threat-research/bandook-persistent-threat-that-keeps-evolving",
+    "https://research.checkpoint.com/2024/sharp-dragon-expands-towards-africa-and-the-caribbean/",
+    "https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware/",
+    "https://blogs.blackberry.com/en/2023/02/blind-eagle-apt-c-36-targets-colombia",
+    "https://research.checkpoint.com/2023/blindeagle-targeting-ecuador-with-sharpened-tools/",
+    "https://cloud.google.com/blog/topics/threat-intelligence/turla-galaxy-opportunity/",
+    "https://www.telsy.com/en/turla-venomous-bear-updates-its-arsenal-newpass-appears-on-the-apt-threat-scene/",
+    "https://cert.gov.ua/article/6276894",
+    "https://cert.gov.ua/article/4492467",
+    "https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack/",
+    "https://www.rapid7.com/blog/post/2024/05/10/ongoing-social-engineering-campaign-linked-to-black-basta-ransomware-operators/",
+    "https://www.welivesecurity.com/en/eset-research/oilrigs-outer-space-juicy-mix-same-ol-rig-new-drill-pipes/",
+    "https://www.trendmicro.com/en_us/research/23/b/new-apt34-malware-targets-the-middle-east.html",
+    "https://www.trendmicro.com/en_us/research/24/d/earth-freybug.html",
+    "https://blog.talosintelligence.com/lazarus_new_rats_dlang_and_telegram/",
+    "https://symantec-enterprise-blogs.security.com/threat-intelligence/springtail-kimsuky-backdoor-espionage",
+    "https://www.securonix.com/blog/securonix-threat-research-security-advisory-new-deepgosu-attack-campaign/",
+    "https://www.seqrite.com/blog/pakistani-apts-escalate-attacks-on-indian-gov-seqrite-labs-unveils-threats-and-connections/",
+    "https://www.microsoft.com/en-us/security/blog/2024/01/17/new-ttps-observed-in-mint-sandstorm-campaign-targeting-high-profile-individuals-at-universities-and-research-orgs/",
+    "https://www.deepinstinct.com/blog/darkbeatc2-the-latest-muddywater-attack-framework",
+    "https://symantec-enterprise-blogs.security.com/threat-intelligence/iran-apt-seedworm-africa-telecoms",
+    "https://www.volexity.com/blog/2024/02/13/charmingcypress-innovating-persistence/",
+    "https://www.microsoft.com/en-us/security/blog/2023/04/18/nation-state-threat-actor-mint-sandstorm-refines-tradecraft-to-attack-high-value-targets/",
+    "https://harfanglab.io/en/insidethelab/apt31-indictment-analysis/",
+    "https://blog.talosintelligence.com/new-zardoor-backdoor/",
+    "https://research.checkpoint.com/2023/malware-spotlight-into-the-trash-analyzing-litterdrifter/",
+    "https://blogs.blackberry.com/en/2023/01/gamaredon-abuses-telegram-to-target-ukrainian-organizations",
+    "https://research.checkpoint.com/2023/pandas-with-a-soul-chinese-espionage-attacks-against-southeast-asian-government-entities/",
+    "https://blog.talosintelligence.com/bitter-apt-adds-bangladesh-to-their/",
+    "https://www.lookout.com/threat-intelligence/article/lookout-discovers-novel-confucius-apt-android-spyware-linked-to-india-pakistan-conflict",
+    "https://symantec-enterprise-blogs.security.com/threat-intelligence/dragonfly-energy-sector-cyber-attacks",
+    "https://asec.ahnlab.com/en/63192/",
+    "https://blog.google/threat-analysis-group/google-tag-coldriver-russian-phishing-malware/",
+    "https://www.welivesecurity.com/2022/11/23/bahamut-cybermercenary-group-targets-android-users-fake-vpn-apps/",
+    "https://www.bleepingcomputer.com/news/security/apt37-hackers-deploy-new-fadestealer-eavesdropping-malware/",
+    "https://www.uscloud.com/blog/hackers-target-government-defense-contractors-with-new-backdoor-malware/",
+    "https://www.mandiant.com/resources/blog/apt29-wineloader-german-political-parties",
+    "https://www.cyberark.com/resources/blog/apt29s-attack-on-microsoft-tracking-cozy-bears-footprints",
+    "https://www.infosecurity-magazine.com/news/russias-apt29-embassies-ngrok/",
+    "https://www.microsoft.com/en-us/security/blog/2023/11/22/diamond-sleet-supply-chain-compromise-distributes-a-modified-cyberlink-installer/",
+    "https://thehackernews.com/2024/04/north-koreas-lazarus-group-deploys-new.html",
+    "https://blog.talosintelligence.com/lazarus-collectionrat/",
+    "https://securityscorecard.com/research/lazarus-group-suspicious-traffic-involving-state-government-ip-addresses/",
+    "https://siliconangle.com/2023/08/29/north-korea-lazarus-group-beefs-malware-attacks/",
+    "https://www.darkreading.com/ics-ot-security/iran-oilrig-cyberattackers-target-israel-critical-infrastructure",
+    "https://www.scmagazine.com/news/russias-sandworm-apt-linked-to-attack-on-texas-water-plant",
+    "https://www.darkreading.com/cyberattacks-data-breaches/iran-linked-muddywater-spies-middle-east-govt-eight-months",
+    "https://cyware.com/resources/research-and-analysis/symphony-of-intrusion-turla-apts-orchestrated-attacks-across-borders-ddd5"
+]
+
+# File name for the output CSV
+output_file = 'scraped_content.csv'
+
+# Scrape content for each URL and save the results to a CSV file
+with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
+    fieldnames = ["URL", "Paragraphs", "Spans", "Text"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    
+    writer.writeheader()
+    
+    for url in urls:
+        content = scrape_content(url)
+        writer.writerow(content)
+
+print(f"Scraped content saved to {output_file}")
+
+
+
+
+import requests
+from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+import csv
+
+# Custom User-Agent to mimic a real browser
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+}
+
+# Create a session with a retry strategy
+session = requests.Session()
+retries = Retry(total=5, backoff_factor=0.3, status_forcelist=[500, 502, 503, 504])
+session.mount('http://', HTTPAdapter(max_retries=retries))
+session.mount('https://', HTTPAdapter(max_retries=retries))
+
+def scrape_content(url):
+    try:
+        # Send a GET request to the URL with the custom User-Agent and retry mechanism
+        response = session.get(url, headers=headers)
+        response.raise_for_status()
+
+        # Parse the page content with BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+        paragraphs = [p.get_text(strip=True) for p in soup.find_all('p')]
+        spans = [span.get_text(strip=True) for span in soup.find_all('span')]
+        body_text = soup.get_text(strip=True)
+
+        return {
+            "URL": url,
+            "Paragraphs": " ".join(paragraphs),
+            "Spans": " ".join(spans),
+            "Text": body_text
+        }
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching {url}: {e}")
+        return {
+            "URL": url,
+            "Paragraphs": "",
+            "Spans": "",
+            "Text": ""
+        }
+
+def scrape_multiple_urls(urls):
+    results = []
+    for url in urls:
+        result = scrape_content(url)
+        results.append(result)
+    return results
+
+def save_to_csv(data, filename='scraped_results.csv'):
+    keys = data[0].keys()
+    with open(filename, 'w', newline='', encoding='utf-8') as output_file:
+        dict_writer = csv.DictWriter(output_file, fieldnames=keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(data)
+
+# Example list of URLs to scrape
+urls = [
+    "https://research.checkpoint.com/2024/sharp-dragon-expands-towards-africa-and-the-caribbean/",
+    "https://research.checkpoint.com/2023/blindeagle-targeting-ecuador-with-sharpened-tools/",
+    "https://www.securonix.com/blog/securonix-threat-research-security-advisory-new-deepgosu-attack-campaign/",
+    "https://research.checkpoint.com/2023/malware-spotlight-into-the-trash-analyzing-litterdrifter/",
+    "https://research.checkpoint.com/2023/pandas-with-a-soul-chinese-espionage-attacks-against-southeast-asian-government-entities/",
+    "https://www.bleepingcomputer.com/news/security/apt37-hackers-deploy-new-fadestealer-eavesdropping-malware/",
+    "https://www.uscloud.com/blog/hackers-target-government-defense-contractors-with-new-backdoor-malware/",
+    "https://securityscorecard.com/research/lazarus-group-suspicious-traffic-involving-state-government-ip-addresses/"
+]
+
+# Scrape the URLs
+scraped_data = scrape_multiple_urls(urls)
+
+# Save the results to a CSV file
+save_to_csv(scraped_data, filename='scraped_results.csv')

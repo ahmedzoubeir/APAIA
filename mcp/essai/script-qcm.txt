@@ -1,0 +1,238 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+from io import StringIO
+from google.generativeai import configure, GenerativeModel
+import os
+
+# Replace with your API key
+api_key = "AIzaSyBG6O1fFig9nfHtoOcV5PO_8xZMPo-vO7o"
+
+# Setup for Gemini model
+configure(api_key=api_key)
+model = GenerativeModel('gemini-1.5-flash')
+
+def scrape_and_save(url, text_filename, tables_filename):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Extract text and paragraphs
+    text_content = ""
+    for paragraph in soup.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+        text_content += paragraph.get_text() + "\n"
+
+    # Extract tables
+    tables = soup.find_all('table')
+    table_dfs = []
+    for idx, table in enumerate(tables):
+        # Convert table to DataFrame
+        table_str = str(table)
+        table_df = pd.read_html(StringIO(table_str))[0]
+        table_df.to_csv(f"{tables_filename}_{idx + 1}.csv", index=False, encoding='utf-8')
+        table_dfs.append(table_df)
+
+    # Save text content
+    with open(text_filename, 'w', encoding='utf-8') as file:
+        file.write(text_content)
+
+def generate_qcm_from_file(filename):
+    with open(filename, 'r', encoding='utf-8') as file:
+        text = file.read()
+
+    prompt = (
+        "You are a cybersecurity expert specializing in cyber threat intelligence. The purpose of this exercise is to educate "
+        "security professionals on defensive strategies and threat detection techniques. The content provided is meant to enhance "
+        "understanding of defensive cybersecurity practices, avoiding offensive or harmful content. Given the text below, please "
+        "generate a maximum of 10 multiple-choice questions with four possible options each.\n"
+        "Follow these requirements:\n"
+        "1. Question Format: Each question must have four options. The options should be challenging and require careful consideration. "
+        "Avoid creating options that could be interpreted as correct under different circumstances.\n"
+        "2. Target Audience: The questions should be suitable for security professionals with three to five years of experience in cyber "
+        "threat intelligence. Focus on defensive measures and understanding threats, avoiding offensive techniques or tools.\n"
+        "3. Content Coverage: Aim to cover various sections of the document to ensure a comprehensive evaluation of the candidate’s knowledge. "
+        "Include context-specific questions that require an understanding of the document’s content, emphasizing defensive strategies.\n"
+        "4. Technical Precision: Use precise terminology and concepts relevant to cyber threat intelligence, particularly focusing on defensive "
+        "strategies, threat detection, and mitigation.\n"
+        "5. Include Technique IDs and Names: Where applicable, mention both the ID and the full name of the MITRE ATT&CK pattern technique, focusing "
+        "on detection and mitigation strategies.\n"
+        "6. Premise Inclusion: Each question should include a premise indicating it pertains to defensive cybersecurity practices, specifying "
+        "the relevant platform (Enterprise, ICS, or Mobile) where necessary.\n"
+        "7. Output Format: Return the output in a formatted text with the following structure:\n"
+        "Question {number}:\n\n"
+        "MITRE ATT&CK Technique: {Technique_ID} ({Technique_Name})\n\n"
+        "Which of the following scenarios is a potential consequence of {specific vulnerability or attack}?\n\n"
+        "Options:\n"
+        "A. {Option_A}\n"
+        "B. {Option_B}\n"
+        "C. {Option_C}\n"
+        "D. {Option_D}\n\n"
+        "Correct Answer: {Correct_Answer}\n\n"
+        "Explanation:\n"
+        "{Explanation}\n\n"
+        "Text:\n" + text
+    )
+
+    try:
+        response = model.generate_content(prompt)
+        print("Response object:", response)  # Print response to check structure
+
+        # Check if candidates and content are present
+        if response.candidates and len(response.candidates) > 0:
+            candidate = response.candidates[0]
+            if hasattr(candidate, 'content') and candidate.content and len(candidate.content.parts) > 0:
+                return candidate.content.parts[0].text
+            else:
+                print("No content parts found or content blocked due to safety concerns.")
+                if hasattr(candidate, 'safety_ratings'):
+                    print("Safety ratings:", candidate.safety_ratings)
+        else:
+            print("No candidates found.")
+
+        return ""
+    except Exception as e:
+        print("Failed to generate QCM:", str(e))
+        return ""
+
+def main():
+    urls = [
+    "https://attack.mitre.org/techniques/T1548/",
+    "https://attack.mitre.org/techniques/T1548/001/",
+    "https://attack.mitre.org/techniques/T1548/002/",
+    "https://attack.mitre.org/techniques/T1548/003/",
+    "https://attack.mitre.org/techniques/T1548/004/",
+    "https://attack.mitre.org/techniques/T1548/005/",
+    "https://attack.mitre.org/techniques/T1548/006/",
+    "https://attack.mitre.org/techniques/T1134/",
+    "https://attack.mitre.org/techniques/T1134/001/",
+    "https://attack.mitre.org/techniques/T1134/002/",
+    "https://attack.mitre.org/techniques/T1134/003/",
+    "https://attack.mitre.org/techniques/T1134/004/",
+    "https://attack.mitre.org/techniques/T1134/005/",
+    "https://attack.mitre.org/techniques/T1098/",
+    "https://attack.mitre.org/techniques/T1098/001/",
+    "https://attack.mitre.org/techniques/T1098/002/",
+    "https://attack.mitre.org/techniques/T1098/003/",
+    "https://attack.mitre.org/techniques/T1098/004/",
+    "https://attack.mitre.org/techniques/T1098/005/",
+    "https://attack.mitre.org/techniques/T1098/006/",
+    "https://attack.mitre.org/techniques/T1547/",
+    "https://attack.mitre.org/techniques/T1547/001/",
+    "https://attack.mitre.org/techniques/T1547/002/",
+    "https://attack.mitre.org/techniques/T1547/003/",
+    "https://attack.mitre.org/techniques/T1547/004/",
+    "https://attack.mitre.org/techniques/T1547/005/",
+    "https://attack.mitre.org/techniques/T1547/006/",
+    "https://attack.mitre.org/techniques/T1547/007/",
+    "https://attack.mitre.org/techniques/T1547/008/",
+    "https://attack.mitre.org/techniques/T1547/009/",
+    "https://attack.mitre.org/techniques/T1547/010/",
+    "https://attack.mitre.org/techniques/T1547/011/",
+    "https://attack.mitre.org/techniques/T1547/012/",
+    "https://attack.mitre.org/techniques/T1547/013/",
+    "https://attack.mitre.org/techniques/T1547/014/",
+    "https://attack.mitre.org/techniques/T1547/015/",
+    "https://attack.mitre.org/techniques/T1037/",
+    "https://attack.mitre.org/techniques/T1037/001/",
+    "https://attack.mitre.org/techniques/T1037/002/",
+    "https://attack.mitre.org/techniques/T1037/003/",
+    "https://attack.mitre.org/techniques/T1037/004/",
+    "https://attack.mitre.org/techniques/T1037/005/",
+    "https://attack.mitre.org/techniques/T1543/",
+    "https://attack.mitre.org/techniques/T1543/001/",
+    "https://attack.mitre.org/techniques/T1543/002/",
+    "https://attack.mitre.org/techniques/T1543/003/",
+    "https://attack.mitre.org/techniques/T1543/004/",
+    "https://attack.mitre.org/techniques/T1543/005/",
+    "https://attack.mitre.org/techniques/T1484/",
+    "https://attack.mitre.org/techniques/T1484/001/",
+    "https://attack.mitre.org/techniques/T1484/002/",
+    "https://attack.mitre.org/techniques/T1546/",
+    "https://attack.mitre.org/techniques/T1546/001/",
+    "https://attack.mitre.org/techniques/T1546/002/",
+    "https://attack.mitre.org/techniques/T1546/003/",
+    "https://attack.mitre.org/techniques/T1546/004/",
+    "https://attack.mitre.org/techniques/T1546/005/",
+    "https://attack.mitre.org/techniques/T1546/006/",
+    "https://attack.mitre.org/techniques/T1546/007/",
+    "https://attack.mitre.org/techniques/T1546/008/",
+    "https://attack.mitre.org/techniques/T1546/009/",
+    "https://attack.mitre.org/techniques/T1546/010/",
+    "https://attack.mitre.org/techniques/T1546/011/",
+    "https://attack.mitre.org/techniques/T1546/012/",
+    "https://attack.mitre.org/techniques/T1546/013/",
+    "https://attack.mitre.org/techniques/T1546/014/",
+    "https://attack.mitre.org/techniques/T1546/015/",
+    "https://attack.mitre.org/techniques/T1546/016/",
+    "https://attack.mitre.org/techniques/T1068/",
+    "https://attack.mitre.org/techniques/T1574/",
+    "https://attack.mitre.org/techniques/T1574/001/",
+    "https://attack.mitre.org/techniques/T1574/002/",
+    "https://attack.mitre.org/techniques/T1574/004/",
+    "https://attack.mitre.org/techniques/T1574/005/",
+    "https://attack.mitre.org/techniques/T1574/006/",
+    "https://attack.mitre.org/techniques/T1574/007/",
+    "https://attack.mitre.org/techniques/T1574/008/",
+    "https://attack.mitre.org/techniques/T1574/009/",
+    "https://attack.mitre.org/techniques/T1574/010/",
+    "https://attack.mitre.org/techniques/T1574/011/",
+    "https://attack.mitre.org/techniques/T1574/012/",
+    "https://attack.mitre.org/techniques/T1574/013/",
+    "https://attack.mitre.org/techniques/T1574/014/",
+    "https://attack.mitre.org/techniques/T1055/",
+    "https://attack.mitre.org/techniques/T1055/001/",
+    "https://attack.mitre.org/techniques/T1055/002/",
+    "https://attack.mitre.org/techniques/T1055/003/",
+    "https://attack.mitre.org/techniques/T1055/004/",
+    "https://attack.mitre.org/techniques/T1055/005/",
+    "https://attack.mitre.org/techniques/T1055/008/",
+    "https://attack.mitre.org/techniques/T1055/009/",
+    "https://attack.mitre.org/techniques/T1055/011/",
+    "https://attack.mitre.org/techniques/T1055/012/",
+    "https://attack.mitre.org/techniques/T1055/013/",
+    "https://attack.mitre.org/techniques/T1055/014/",
+    "https://attack.mitre.org/techniques/T1055/015/",
+    "https://attack.mitre.org/techniques/T1053/",
+    "https://attack.mitre.org/techniques/T1053/002/",
+    "https://attack.mitre.org/techniques/T1053/003/",
+    "https://attack.mitre.org/techniques/T1053/004/",
+    "https://attack.mitre.org/techniques/T1053/005/",
+    "https://attack.mitre.org/techniques/T1053/006/",
+    "https://attack.mitre.org/techniques/T1053/007/",
+    "https://attack.mitre.org/techniques/T1078/",
+    "https://attack.mitre.org/techniques/T1078/001/",
+    "https://attack.mitre.org/techniques/T1078/002/",
+    "https://attack.mitre.org/techniques/T1078/003/",
+    "https://attack.mitre.org/techniques/T1078/004/"
+]
+
+
+    all_qcm_data = []
+    file_count = 1
+
+    for url in urls:
+        text_filename = f"combined_content_{file_count}.txt"
+        tables_filename = f"table_content_{file_count}"
+
+        # Scrape and save content
+        scrape_and_save(url, text_filename, tables_filename)
+
+        # Generate QCM questions
+        tsv_data = generate_qcm_from_file(text_filename)
+
+        # Append TSV data to the list
+        if tsv_data:
+            all_qcm_data.append(tsv_data)
+
+        # Increment file count
+        file_count += 1
+
+    # Save all appended QCM data to a single file
+    if all_qcm_data:
+        with open("qcm_output_combined.tsv", 'w', encoding='utf-8') as file:
+            for data in all_qcm_data:
+                file.write(data + "\n")
+
+    print("QCM generation complete. Output saved to 'qcm_output_combined.tsv'.")
+
+if __name__ == "__main__":
+    main()

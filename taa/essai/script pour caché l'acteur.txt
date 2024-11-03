@@ -1,0 +1,20 @@
+import pandas as pd
+import re
+
+# Load the CSV file
+file_path = 'combined_scraped_results.csv'
+df = pd.read_csv(file_path)
+
+# Define the function to replace threat actor names with placeholders
+def replace_threat_names_with_placeholder(text):
+    if isinstance(text, str):  # Check if the text is a string
+        # Replace "threat actor" and "malware" with [PLACEHOLDER]
+        return re.sub(r'\b(threat actor|malware)\b', '[PLACEHOLDER]', text, flags=re.IGNORECASE)
+    return text  # Return the text as-is if it's not a string
+
+# Apply the replacement function to the 'Paragraphs' column
+df['Paragraphs'] = df['Paragraphs'].apply(replace_threat_names_with_placeholder)
+
+# Save the modified data to a new file
+output_file_path = 'result.csv'
+df.to_csv(output_file_path, index=False)

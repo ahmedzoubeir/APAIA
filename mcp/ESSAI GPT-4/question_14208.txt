@@ -1,0 +1,64 @@
+**Question 1**
+
+**Premise:** According to MITRE ATT&CK, which technique ID and name is related to the absence of proper source validation?
+
+**Options:**
+A. T1114: Origin Validation Error
+B. T1190: Exploit Public-Facing Application
+C. T1214: Remote Desktop Protocol Brute Force
+D. T1496: Schedule Task/Job
+
+**Correct Answer:** A
+**Explanation:** T1114: Origin Validation Error is the correct answer as it pertains to the MITRE ATT&CK technique of failing to validate the source of data or communication.
+
+**Question 2**
+
+**Premise:** An organization aims to incorporate recommendations from the NIST Cybersecurity Framework (CSF). Which CSF component focuses on assessing and managing cybersecurity risks?
+
+**Options:**
+A. Identify
+B. Protect
+C. Detect
+D. Respond
+
+**Correct Answer:** C
+**Explanation:** Detect is the correct answer as it represents the CSF component responsible for assessing and managing cybersecurity risks through continuous monitoring and detection mechanisms.
+
+**Question 3**
+
+**Premise:** Which NIST publication provides guidance for integrating cybersecurity and enterprise risk management (ERM)?
+
+**Options:**
+A. NIST Cybersecurity Framework (CSF)
+B. Integrating Cybersecurity and Enterprise Risk Management (ERM)
+C. Risk Management Framework (RMF)
+D. Privacy Framework
+
+**Correct Answer:** B
+**Explanation:** Integrating Cybersecurity and Enterprise Risk Management (ERM) is the correct answer as it is the NIST publication that provides guidelines for integrating cybersecurity risks into an organization's ERM program.
+
+**Question 4**
+
+**Premise:** The NIST Risk Management Framework (RMF) includes a provision for incorporating privacy risk management. Which component of RMF facilitates this integration?
+
+**Options:**
+A. Risk Assessment
+B. Risk Response
+C. System Security Plan
+D. Continuous Monitoring
+
+**Correct Answer:** A
+**Explanation:** Risk Assessment is the correct answer because it involves identifying and analyzing privacy risks, which is a key aspect of incorporating privacy risk management into RMF.
+
+**Question 5**
+
+**Premise:** An organization is developing a Workforce Framework for Cybersecurity (NICE Framework) to enhance its cybersecurity posture. Which dimension of the NICE Framework describes the knowledge and skills required for performing cybersecurity tasks?
+
+**Options:**
+A. Task Level
+B. Knowledge Level
+C. Skill Level
+D. Experience Level
+
+**Correct Answer:** B
+**Explanation:** Knowledge Level is the correct answer as it represents the dimension of the NICE Framework that focuses on the knowledge and skills required to perform specific cybersecurity tasks.

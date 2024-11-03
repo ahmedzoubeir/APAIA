@@ -1,0 +1,94 @@
+**Question 1:**
+
+**Platform:** Enterprise
+
+**MITRE ATT&CK Technique ID:** T1132
+
+**Question:** Which of the following is a common consequence of an origin validation error in web applications?
+
+**Options:**
+
+A. Gaining privileged access to sensitive information
+B. Denial of service to legitimate users
+C. Accessing data that is inadvertently accessible to the source
+D. Modifying sensitive data
+
+**Correct Answer:** C
+
+**Explanation:** An origin validation error occurs when a web application does not properly verify the source of data or communication. This can allow attackers to access functionality that is inadvertently accessible to the source, such as gaining access to sensitive user data or account information.
+
+**Question 2:**
+
+**Platform:** ICS
+
+**MITRE ATT&CK Technique ID:** T1571
+
+**Question:** How does an origin validation error in industrial control systems (ICS) differ from a similar error in enterprise environments?
+
+**Options:**
+
+A. It can result in physical damage to equipment
+B. It is always accompanied by a denial of service attack
+C. It is more likely to be exploited by nation-state actors
+D. It requires a higher level of technical sophistication
+
+**Correct Answer:** A
+
+**Explanation:** In ICS environments, an origin validation error can result in physical damage to equipment if it allows an attacker to gain control of critical systems. This is because ICS systems often control physical processes and can be vulnerable to manipulation.
+
+**Question 3:**
+
+**Platform:** Mobile
+
+**MITRE ATT&CK Technique ID:** T1105
+
+**Question:** Which of the following is a mitigating control that can help prevent origin validation errors in mobile applications?
+
+**Options:**
+
+A. Implementing strong authentication and authorization mechanisms
+B. Using network segmentation to isolate vulnerable devices
+C. Regularly patching and updating the OS and application software
+D. Employing intrusion detection and prevention systems
+
+**Correct Answer:** C
+
+**Explanation:** Regularly patching and updating the OS and application software can help patch vulnerabilities that could lead to origin validation errors. This is because updates often include security patches that address these types of vulnerabilities.
+
+**Question 4:**
+
+**Platform:** Cloud
+
+**MITRE ATT&CK Technique ID:** T1582
+
+**Question:** How can origin validation errors in cloud environments be exploited to gain access to sensitive information?
+
+**Options:**
+
+A. By using cloud misconfiguration to obtain access credentials
+B. By launching a distributed denial of service attack
+C. By exploiting vulnerabilities in cloud-based infrastructure
+D. By intercepting and modifying data in transit
+
+**Correct Answer:** A
+
+**Explanation:** Origin validation errors in cloud environments can be exploited by using cloud misconfiguration to obtain access credentials. This is because cloud misconfigurations can expose sensitive information or allow attackers to gain unauthorized access to cloud resources.
+
+**Question 5:**
+
+**Platform:** Enterprise
+
+**MITRE ATT&CK Technique ID:** T1021
+
+**Question:** Which of the following is a best practice for mitigating origin validation errors in enterprise networks?
+
+**Options:**
+
+A. Using a network firewall to block unauthorized access
+B. Implementing intrusion detection and prevention systems
+C. Performing regular security audits and vulnerability assessments
+D. All of the above
+
+**Correct Answer:** D
+
+**Explanation:** All of the listed options are best practices for mitigating origin validation errors in enterprise networks. By implementing a comprehensive approach to security, organizations can reduce the risk of these errors being exploited by attackers.

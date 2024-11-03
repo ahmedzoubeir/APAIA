@@ -1,0 +1,64 @@
+**Question 1**
+MITRE ATT&CK Platform: Enterprise
+MITRE ATT&CK Technique: Credential Access: Phishing
+
+In the context of MITRE ATT&CK Credential Access: Phishing, how can an organization mitigate the risk of users authenticating with untrustworthy services?
+(A) Use multi-factor authentication on all accounts
+(B) Implement anti-spam filters and firewalls
+(C) Deploy intrusion detection and prevention systems
+(D) Educate users about phishing and social engineering
+
+**Correct Answer: D**
+Explanation: The primary method of defense when dealing with phishing attacks is user awareness and education. Educate users on phishing tactics, brand impersonation, and other social engineering techniques.
+
+**Question 2**
+MITRE ATT&CK Platform: ICS
+MITRE ATT&CK Technique: Exfiltration Over Network: Web Service
+
+Which of the following is a typical objective of Exfiltration Over Network: Web Service in an ICS environment?
+(A) Gain remote access to critical systems
+(B) Modify device configurations
+(C) Extract sensitive operational data
+(D) Disrupt network communication
+
+**Correct Answer: C**
+Explanation: Exfiltration Over Network: Web Service aims to transfer data out of the ICS network via web services. This often involves obtaining sensitive operational data from the ICS environment.
+
+**Question 3**
+MITRE ATT&CK Platform: Mobile
+MITRE ATT&CK Technique: Persistence: Remote Access Trojan (RAT)
+
+In the context of MITRE ATT&CK Persistence: Remote Access Trojan (RAT), which of the following is a signature indicator of compromise (IOC)?
+(A) Presence of known malicious code binaries
+(B) Suspicious network traffic connecting to external domains
+(C) Unauthorized changes to system files
+(D) Active listening services on unusual ports
+
+**Correct Answer: B**
+Explanation: RATs often establish persistent connections to external command and control (C2) servers. Identifying suspicious network traffic to unknown domains is a typical IOC for RAT activity.
+
+**Question 4**
+MITRE ATT&CK Platform: Enterprise
+MITRE ATT&CK Technique: Reconnaissance: External Reconnaissance
+
+Which of the following sources is most frequently used by attackers for External Reconnaissance?
+(A) Vulnerability scanners
+(B) OSINT tools
+(C) Network scans
+(D) Social media profiles
+
+**Correct Answer: B**
+Explanation: OSINT (Open Source Intelligence) tools, such as Google Dorks, Maltego, and Shodan, are commonly used by attackers to gather information about potential targets without interacting with them directly.
+
+**Question 5**
+MITRE ATT&CK Platform: ICS
+MITRE ATT&CK Technique: Execution: Process Injection
+
+In an ICS environment, which of the following is a potential consequence of successful Execution: Process Injection?
+(A) Loss of sensitive data
+(B) Denial of service to critical systems
+(C) Theft of user credentials
+(D) Modification of process parameters
+
+**Correct Answer: D**
+Explanation: In an ICS environment, attackers often inject malicious code into legitimate processes to manipulate or modify the behavior of ICS components, potentially altering process parameters and disrupting operations.

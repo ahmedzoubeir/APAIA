@@ -1,0 +1,84 @@
+**Question 1:**
+
+**MITRE ATT&CK Technique:** T1048 (Remote File Copy)
+
+Which of the following scenarios is a potential consequence of an Origin Validation Error (CWE-346) allowing the execution of malicious code on a vulnerable system?
+
+**Options:**
+
+A. Data exfiltration from the target system
+B. Unavailability of critical services
+C. Modification of sensitive information
+D. Loss of system control
+
+**Correct Answer:** A
+
+**Explanation:** Remote File Copy (T1048) involves copying files from a remote location to a target system. By exploiting an Origin Validation Error, an attacker could bypass security controls and transfer malicious code to the system, potentially leading to data exfiltration.
+
+**Question 2:**
+
+**MITRE ATT&CK Technique:** T1053 (Lateral Movement)
+
+Which of the following best describes the primary goal of an adversary that successfully compromises a host via an Origin Validation Error (CWE-346) targeting an ICS device?
+
+**Options:**
+
+A. To establish persistence on the device
+B. To spread the compromise to other systems within the network
+C. To exfiltrate sensitive information from the device
+D. To disrupt the operations of the ICS system
+
+**Correct Answer:** B
+
+**Explanation:** Lateral Movement (T1053) involves moving across a network from a compromised system to other systems. By compromising an ICS device through an Origin Validation Error, an attacker could potentially gain access to other devices within the ICS network, allowing for further compromise and disruption.
+
+**Question 3:**
+
+**MITRE ATT&CK Technique:** T1055 (Process Injection)
+
+Which of the following is a potential method used by attackers to exploit an Origin Validation Error (CWE-346) in mobile applications?
+
+**Options:**
+
+A. Intercepting network traffic
+B. Modifying trusted certificates
+C. Injecting malicious code into running processes
+D. Exploiting vulnerabilities in the underlying operating system
+
+**Correct Answer:** C
+
+**Explanation:** Process Injection (T1055) involves injecting malicious code into running processes. In mobile applications, an Origin Validation Error could allow attackers to bypass security controls and inject malicious code into the application's process, leading to compromise.
+
+**Question 4:**
+
+**MITRE ATT&CK Technique:** T1577 (Subverting Cryptographic Verification)
+
+Which of the following is a potential impact of an Origin Validation Error (CWE-346) on an enterprise network that uses TLS for secure communication?
+
+**Options:**
+
+A. Denial of service
+B. Data leakage
+C. Loss of confidentiality
+D. Man-in-the-middle attacks
+
+**Correct Answer:** C
+
+**Explanation:** Subverting Cryptographic Verification (T1577) involves undermining the integrity of cryptographic mechanisms. By exploiting an Origin Validation Error, an attacker could potentially bypass TLS certificate validation, resulting in the loss of confidentiality and integrity of network communications.
+
+**Question 5:**
+
+**MITRE ATT&CK Technique:** T1613 (Remote Service Execution)
+
+Which of the following is a potential scenario where an Origin Validation Error (CWE-346) in a web server could be exploited by an attacker?
+
+**Options:**
+
+A. Executing a malicious payload on the server's operating system
+B. Establishing a reverse shell to gain remote access to the server
+C. Modifying sensitive configuration files on the server
+D. Scanning the server's network for further compromise opportunities
+
+**Correct Answer:** B
+
+**Explanation:** Remote Service Execution (T1613) involves executing remote commands or services on a target system. By exploiting an Origin Validation Error, an attacker could potentially gain the ability to execute commands on the web server's operating system, allowing them to establish a reverse shell for remote access.

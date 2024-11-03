@@ -1,0 +1,74 @@
+**Question 1:**
+
+**Premise: MITRE ATT&CK Framework for Enterprise**
+
+Which MITRE ATT&CK technique ID and name corresponds to the weakness where the product does not properly verify the source of data or communication?
+
+(A) T1572: Origin Validation Error
+(B) T1094: Command and Scripting Interpreter
+(C) T1057: Process Injection
+(D) T1211: Kernel Modules and Extensions
+
+**Correct Answer: A**
+
+**Explanation:** T1572 (Origin Validation Error) aligns with the weakness described in the document, where the product fails to validate the source of data or communication, leading to potential security risks.
+
+**Question 2:**
+
+**Premise: NIST Privacy Framework**
+
+According to the document, what is the main purpose of the NIST Privacy Framework?
+
+(A) To identify and manage privacy risks in organizations.
+(B) To establish compliance with government regulations.
+(C) To protect sensitive data from cyber threats.
+(D) To improve customer trust and loyalty.
+
+**Correct Answer: A**
+
+**Explanation:** The document states that the NIST Privacy Framework enables organizations to identify and manage privacy risks, fostering trust and compliance.
+
+**Question 3:**
+
+**Premise: MITRE ATT&CK Framework for ICS**
+
+Which of the following is a consequence of the weakness where the source of data or communication is not properly validated?
+
+(A) Unauthorized access to sensitive information
+(B) Denial of service attacks
+(C) System malfunctions
+(D) Financial loss
+
+**Correct Answer: A**
+
+**Explanation:** The document highlights that an adversary can potentially gain unauthorized access to information if the origin validation is not properly performed.
+
+**Question 4:**
+
+**Premise: NIST Cybersecurity Framework**
+
+How does the NIST Cybersecurity Framework (CSF) typically integrate into an organization's existing risk management program?
+
+(A) By replacing it entirely
+(B) By integrating as a standalone module
+(C) By integrating with the organization's ERM program
+(D) By integrating with the organization's IT risk management program
+
+**Correct Answer: C**
+
+**Explanation:** The document emphasizes integrating CSF with an organization's ERM program to improve overall cybersecurity risk management.
+
+**Question 5:**
+
+**Premise: MITRE ATT&CK Framework for Mobile**
+
+What is the primary goal of the Workforce Framework for Cybersecurity (NICE Framework)?
+
+(A) To provide guidance on building a cybersecurity workforce
+(B) To establish best practices for cybersecurity training
+(C) To certify cybersecurity professionals
+(D) To research emerging cybersecurity threats
+
+**Correct Answer: A**
+
+**Explanation:** The document outlines the NICE Framework's objective of providing a common language and building blocks for organizations to develop and enhance their cybersecurity workforce.

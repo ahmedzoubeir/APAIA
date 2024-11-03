@@ -1,0 +1,58 @@
+import requests
+from bs4 import BeautifulSoup
+import csv
+import time
+
+def extract_description_base_score_vector(url):
+    try:
+        response = requests.get(url, timeout=10)  # Added timeout
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Extract description
+        description_tag = soup.find("p", {"data-testid": "vuln-description"})
+        description = description_tag.text.strip() if description_tag else "No description found"
+
+        # Extract base score
+        base_score_tag = soup.find("a", {"data-testid": "vuln-cvss3-panel-score"})
+        base_score = base_score_tag.text.strip() if base_score_tag else "No base score found"
+
+        # Extract vector
+        vector_tag = soup.find("span", {"data-testid": "vuln-cvss3-nist-vector"})
+        vector = vector_tag.text.strip() if vector_tag else "No vector found"
+
+        return description, base_score, vector
+    except Exception as e:
+        print(f"Error fetching data from {url}: {e}")
+        return "No description found", "No base score found", "No vector found"
+
+def save_descriptions_base_scores_vectors_to_csv(start, end):
+    with open('cve_descriptions_base_scores_vectors.csv', mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['URL', 'Description', 'Base Score', 'Vector', 'Prompt'])  # Header
+
+    for i in range(start, end + 1):
+        cve_id = f"{i:04d}"  # Format CVE ID with leading zeros
+        url = f"https://nvd.nist.gov/vuln/detail/CVE-2024-{cve_id}"
+        print(f"Processing {url}...")
+
+        description, base_score, vector = extract_description_base_score_vector(url)
+        prompt = f"""
+        You are a cybersecurity expert. Given the following vulnerability description, identify the appropriate CVSS score and vector.
+        Return only the base score and vector. If multiple vectors apply, provide the most relevant one.
+
+        Description:
+        {description}
+        """
+
+        print(f"Description found: {description[:100]}...")  # Print first 100 characters of description
+
+        with open('cve_descriptions_base_scores_vectors.csv', mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow([url, description, base_score, vector, prompt])
+
+        # Sleep to avoid hitting rate limits or overloading the server
+        time.sleep(2)
+
+# Example usage
+save_descriptions_base_scores_vectors_to_csv(25001, 30001)  # Change the range as needed

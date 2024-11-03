@@ -1,0 +1,82 @@
+import time
+import pandas as pd
+import google.generativeai as genai
+import itertools
+
+# API keys
+api_keys = itertools.cycle([
+    "AIzaSyCFGmSONHgj2qK6TngDMdKt89YdAHvWwg8",
+    "AIzaSyBSCBUTVQg5QzQex9ZXJWxeoQuH3CuItms",
+    "AIzaSyA919PifW4vVTsHt7XC3AerL-LwiMYWTXw"
+])
+
+# Configure the initial API key
+current_key = next(api_keys)
+genai.configure(api_key=current_key)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+# Load the dataset
+input_file = "combined_scraped_results.csv"
+df = pd.read_csv(input_file)
+
+# Combine 'Paragraphs', 'Spans', and 'Text' into a single string for the prompt
+df['Combined_Text'] = df.apply(lambda row: f"{row['Paragraphs']} {row['Spans']} {row['Text']}", axis=1)
+
+# Add the prompt column using your provided prompt template
+df['Prompt'] = df['Combined_Text'].apply(lambda x: f"""
+You are a cybersecurity expert specializing in cyber threat intelligence. You are given a threat report
+that describes a cyber incident. Any direct mentions of the threat actor group, specific campaign
+names, or malware names responsible have been replaced with [PLACEHOLDER]. Your task is to
+analyze the report and attribute the incident to a known threat actor based on the techniques, tactics,
+procedures (TTPs), and any other relevant information described. Please provide the name of the
+threat actor you believe is responsible and briefly explain your reasoning.
+Threat Report:
+{x}
+""")
+
+# Function to switch API key
+def switch_api_key():
+    global current_key
+    current_key = next(api_keys)
+    genai.configure(api_key=current_key)
+    print(f"Switched to new API key: {current_key}")
+
+# Function to call Gemini API and get a response
+def get_gemini_response(prompt):
+    try:
+        start_time = time.time()
+        response = model.generate_content(prompt, safety_settings="BLOCK_NONE")
+        end_time = time.time()
+        print(f"API response time: {end_time - start_time} seconds")
+        if response and response.candidates:
+            return response.candidates[0].content.parts[0].text.strip()
+        print("No valid response candidates received.")
+        return None
+    except Exception as e:
+        if "quota" in str(e).lower() or "resource has been exhausted" in str(e).lower():
+            print("Quota exceeded. Switching API key.")
+            switch_api_key()
+            time.sleep(5)
+            return get_gemini_response(prompt)
+        print(f"Error in get_gemini_response: {e}")
+        return None
+
+# Iterate over each row and get Gemini's response for the combined text
+output_file = "cvss_scores_gemini.csv"
+for index, row in df.iterrows():
+    try:
+        print(f"Processing row {index+1}/{len(df)}")
+        prompt = row['Prompt']
+        print(f"Prompt: {prompt[:100]}...")  # Print the first 100 characters of the prompt for debugging
+        response = get_gemini_response(prompt)
+        if response is None:
+            print("No response received. Skipping this row.")
+            continue
+        print(f"Response: {response[:100]}...")  # Print the first 100 characters of the response for debugging
+        df.at[index, 'Gemini_Answer'] = response
+        df.iloc[[index]].to_csv(output_file, mode='a', header=(index==0), index=False)
+    except Exception as e:
+        print(f"An error occurred while processing row {index+1}: {e}")
+    time.sleep(4)  # Adding a delay between API calls to avoid rate limiting
+
+print(f"Responses saved to {output_file}")

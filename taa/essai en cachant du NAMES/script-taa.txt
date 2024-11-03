@@ -1,0 +1,107 @@
+import requests
+from bs4 import BeautifulSoup
+import csv
+import google.generativeai as genai  # Import the Gemini API module
+
+# Function to identify and replace threat actors and campaign names with placeholders
+def replace_names_with_placeholders(text, gemini_key):
+    prompt = f"""
+    Given the following threat intelligence report, identify and replace any mentions of threat actors and associated malware campaign names with placeholders such as [THREAT_ACTOR] and [CAMPAIGN_NAME].
+    
+    Report: {text}
+    
+    The sanitized report should look like this:
+    [Sanitized Report]
+    """
+
+    # Configure the Gemini API
+    genai.configure(api_key=gemini_key)
+    
+    # Configure generation settings
+    generation_config = {
+        "temperature": 0.7,
+        "top_p": 1,
+        "top_k": 5,
+        "max_output_tokens": 512,
+    }
+    
+    try:
+        # Initialize the model and generate content
+        model = genai.GenerativeModel(model_name="gemini-1.0-pro", generation_config=generation_config)
+        response = model.generate_content(prompt,safety_settings="BLOCK_NONE")
+        
+        # Debugging: Print the raw response
+        print(f"API Response: {response}")
+
+        # Extract the sanitized text
+        sanitized_text = response.candidates[0].content.parts[0].text if response.candidates else text
+    
+    except Exception as e:
+        print(f"Error during API call: {e}")
+        sanitized_text = text  # Fallback to the original text in case of an error
+
+    return sanitized_text
+
+
+# Function to scrape paragraphs, spans, and text from a given URL
+def scrape_content(url, gemini_key):
+    try:
+        # Send a GET request to the URL
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for bad responses
+
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Extract text from <p> (paragraphs) and <span> elements
+        paragraphs = " ".join([p.get_text(strip=True) for p in soup.find_all('p')])
+        spans = " ".join([span.get_text(strip=True) for span in soup.find_all('span')])
+
+        # Combine paragraphs and spans to create the full report
+        full_text = f"{paragraphs} {spans}"
+
+        # Replace threat actor and campaign names with placeholders
+        sanitized_text = replace_names_with_placeholders(full_text, gemini_key)
+
+        # Debugging: Print the original and sanitized text
+        print(f"Original Text: {full_text[:200]}...")  # Print the first 200 characters for brevity
+        print(f"Sanitized Text: {sanitized_text[:200]}...")  # Print the first 200 characters for brevity
+
+        return {
+            "URL": url,
+            "Original Text": full_text,
+            "Sanitized Text": sanitized_text
+        }
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching {url}: {e}")
+        return {
+            "URL": url,
+            "Original Text": "",
+            "Sanitized Text": ""
+        }
+
+# List of URLs to scrape
+urls = [
+    "https://www.proofpoint.com/us/blog/threat-insight/bumblebee-buzzes-back-black",
+    # Add other URLs as needed
+]
+
+# File name for the output CSV
+output_file = 'sanitized_content.csv'
+
+# API key for Gemini
+api_key = "AIzaSyA_1b3F7VjRvaECq9T5Y8cuHpD44ZKo7Iw"  # Replace with your actual API key
+
+# Scrape content for each URL and save the results to a CSV file
+with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
+    fieldnames = ["URL", "Original Text", "Sanitized Text"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+
+    for url in urls:
+        content = scrape_content(url, api_key)
+        writer.writerow(content)
+
+print(f"Sanitized content saved to {output_file}")

@@ -1,0 +1,84 @@
+**Question 1:**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Technique ID:** T1204
+
+Which of the following is the primary objective of an Origin Validation Error attack?
+
+(A) Gaining unauthorized access to sensitive data
+(B) Manipulating the victim's web browser to execute malicious code
+(C) Disrupting the normal operation of the targeted system
+(D) Stealing personal information for identity theft
+
+**Answer:** A
+
+**Explanation:** Origin Validation Error attacks aim to exploit the product's inability to correctly verify the source of data or communication, allowing attackers to bypass security mechanisms and gain unauthorized access to sensitive information.
+
+**Question 2:**
+
+**MITRE ATT&CK Platform:** Mobile
+
+**Technique ID:** T1608
+
+Which of the following describes a common example of an Origin Validation Error in mobile applications?
+
+(A) Accepting untrusted input from a third-party application
+(B) Storing sensitive data in an insecure location
+(C) Using weak encryption algorithms
+(D) Failing to patch security vulnerabilities
+
+**Answer:** A
+
+**Explanation:** Mobile applications often communicate with third-party services, and Origin Validation Errors can occur when the app fails to ensure the authenticity and integrity of the data received from these services.
+
+**Question 3:**
+
+**MITRE ATT&CK Platform:** ICS
+
+**Technique ID:** T1114
+
+How does an Origin Validation Error typically impact the confidentiality of an industrial control system (ICS)?
+
+(A) It allows unauthorized access to sensor data, compromising the integrity of the system.
+(B) It enables attackers to manipulate device configurations, potentially disrupting operations.
+(C) It exposes sensitive data, such as employee records, increasing the risk of identity theft.
+(D) It grants attackers remote access to the ICS network, allowing them to launch further attacks.
+
+**Answer:** C
+
+**Explanation:** Origin Validation Errors in ICS environments can expose sensitive information stored within the system, compromising the confidentiality of employee records or system configurations.
+
+**Question 4:**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Technique ID:** T1030
+
+Which of the following is a recommended best practice to mitigate Origin Validation Errors in enterprise networks?
+
+(A) Implementing network access control measures
+(B) Regularly patching software and systems
+(C) Employing multi-factor authentication
+(D) Using intrusion detection and prevention systems
+
+**Answer:** A
+
+**Explanation:** Network access control measures help identify and control access to the network, reducing the risk of attackers exploiting Origin Validation Errors to gain unauthorized access to enterprise systems.
+
+**Question 5:**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Technique ID:** T1007
+
+How does an Origin Validation Error contribute to the success of a phishing attack?
+
+(A) It allows attackers to bypass email security filters.
+(B) It tricks victims into providing sensitive information on a spoofed website.
+(C) It enables attackers to redirect traffic to malicious websites.
+(D) It compromises the legitimacy of trusted websites.
+
+**Answer:** B
+
+**Explanation:** Origin Validation Errors can occur when email clients fail to verify the true sender of emails, allowing attackers to craft phishing emails that appear legitimate and trick victims into disclosing sensitive information.

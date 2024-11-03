@@ -1,0 +1,21 @@
+Question,Option A,Option B,Option C,Option D,Correct Answer,Explanation
+Which MITRE ATT&CK technique ID is associated with the "Access Token Manipulation" tactic?
+T1078,T1089,T1099,T1100,A,T1078,The Access Token Manipulation tactic is associated with MITRE ATT&CK technique ID T1078.
+Which of the following is NOT a sub-technique within the "Access Token Manipulation" tactic?
+Token Impersonation/Theft,Token Duplication,Token Spoofing,Privilege Escalation,C,Privilege Escalation,The Access Token Manipulation tactic focuses on modifying access tokens, not on broader privilege escalation methods.
+What is the name of the technique used by Blue Mockingbird to escalate privileges from web application pool accounts to NT AUTHORITY\SYSTEM?
+JuicyPotato,BadPotato,ConfuserEx,Runas,A,JuicyPotato,Blue Mockingbird is known for using JuicyPotato to exploit the SeImpersonate token privilege.
+What specific privilege does HermeticWiper attempt to acquire using AdjustTokenPrivileges for debugging purposes?
+SeBackupPrivilege,SeLoadDriverPrivilege,SeDebugPrivilege,SeShutdownPrivilege,C,SeDebugPrivilege,HermeticWiper aims to acquire SeDebugPrivilege for debugging purposes.
+What command-line tool can a standard user employ to create impersonation tokens without administrator privileges?
+Runas,PowerSploit's Invoke-TokenManipulation,AdjustTokenPrivileges,LogonUser,A,Runas,The runas command can be utilized by standard users to create impersonation tokens.
+What MITRE ATT&CK platform does the "Access Token Manipulation" tactic primarily apply to?
+Enterprise,ICS,Mobile,All of the above,A,Enterprise,The "Access Token Manipulation" tactic is primarily associated with the Enterprise platform.
+Which of the following is NOT a Windows API function that attackers might use to manipulate access tokens?
+DuplicateTokenEx,ImpersonateLoggedOnUser,LogonUser,AdjustTokenPrivileges,D,AdjustTokenPrivileges,While AdjustTokenPrivileges is used to modify token privileges, it doesn't directly manipulate the tokens themselves.
+What is the primary objective of the "Access Token Manipulation" tactic?
+To gain initial access to a system,To bypass authentication mechanisms,To escalate privileges,To exfiltrate sensitive data,C,To escalate privileges,The core goal of Access Token Manipulation is to elevate privileges within a system.
+What is a crucial mitigation strategy against "Access Token Manipulation" in the context of user accounts?
+Enabling default user accounts,Limiting access tokens to specific processes,Granting users the least privilege necessary,Using two-factor authentication,C,Granting users the least privilege necessary,Restricting user accounts to the minimal privileges they require is a fundamental mitigation strategy against Access Token Manipulation.
+Which of the following is a detection method for "Access Token Manipulation" that involves monitoring for inconsistencies in process information?
+Auditing command-line activity,Analyzing user network activity,Querying for process and thread token data,Monitoring for API calls related to token manipulation,C,Querying for process and thread token data,Checking for inconsistencies in process and thread token data, such as a user process impersonating SYSTEM, is a detection method.

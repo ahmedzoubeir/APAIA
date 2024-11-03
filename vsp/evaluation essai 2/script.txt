@@ -1,0 +1,85 @@
+import time
+import pandas as pd
+import google.generativeai as genai
+import itertools
+
+# List of your API keys
+api_keys = itertools.cycle([
+    "AIzaSyA_1b3F7VjRvaECq9T5Y8cuHpD44ZKo7Iw",
+    "AIzaSyAEpgThuLROW_H4sJxIVP8WHWQis8KaWd8",
+    "AIzaSyAbXKJMfA-tIEu51TZ4qVnTk01CW3IpKus"
+    # Add more keys if available
+])
+
+# Configure the initial API key
+current_key = next(api_keys)
+genai.configure(api_key=current_key)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+# Load the dataset
+input_file = "filtered_cve_descriptions_and_vectors.csv"
+df = pd.read_csv(input_file)
+
+# Function to switch to the next API key
+def switch_api_key():
+    global current_key
+    current_key = next(api_keys)
+    genai.configure(api_key=current_key)
+    print(f"Switched to new API key: {current_key}")
+
+# Function to call Gemini API and get a response
+def get_gemini_response(description):
+    try:
+        print(f"Using API key: {current_key}")
+        # Refined prompt to ensure CVSS score extraction
+        refined_prompt = f"""
+        Analyze the following CVE description and calculate the CVSS v3.1 Base Score. Determine the
+        values for each base metric: AV, AC, PR, UI, S, C, I, and A. Summarize each metric’s value and
+        provide the final CVSS v3.1 vector string.
+        Valid options for each metric are as follows:
+        - Attack Vector (AV): Network (N), Adjacent (A), Local (L), Physical (P)
+        - Attack Complexity (AC): Low (L), High (H)
+        - Privileges Required (PR): None (N), Low (L), High (H)
+        - User Interaction (UI): None (N), Required (R)
+        - Scope (S): Unchanged (U), Changed (C)
+        - Confidentiality (C): None (N), Low (L), High (H)
+        - Integrity (I): None (N), Low (L), High (H)
+        - Availability (A): None (N), Low (L), High (H)
+        Summarize each metric’s value and provide the final CVSS v3.1 vector string. Ensure the final line
+        of your response contains only the CVSS v3 Vector String in the following format:
+        Example format: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+        CVE Description: {description}
+        """
+        print(f"Prompt: {refined_prompt[:100]}...")  # Log the first 100 characters of the prompt for inspection
+        response = model.generate_content(refined_prompt, safety_settings="BLOCK_NONE")
+        print("Full response:", response)  # Log the full response for better diagnostics
+        if response and response.candidates:
+            # Extract the text from the first candidate
+            return response.candidates[0].content.parts[0].text.strip()
+        else:
+            print("No candidates found in the response.")
+            return None
+    except Exception as e:
+        if "quota" in str(e).lower() or "resource has been exhausted" in str(e).lower():
+            print("Quota exceeded. Switching API key.")
+            switch_api_key()  # Switch to the next API key
+            time.sleep(5)  # Slight delay before retrying with new key
+            return get_gemini_response(description)  # Retry with a new key
+        else:
+            print(f"Error: {e}")
+            return None
+
+# Start processing from row 1502 (which is index 1501)
+start_index = 1501
+output_file = "cvss_scores_gemini.csv"
+
+# Iterate over each row starting from row 1502
+for index in range(start_index, len(df)):
+    print(f"Processing row {index+1}/{len(df)}")
+    description = df.at[index, 'Description']
+    response = get_gemini_response(description)
+    df.at[index, 'Gemini_Answer'] = response
+    df.iloc[[index]].to_csv(output_file, mode='a', header=(index==start_index), index=False)  # Save the current row
+    time.sleep(4)  # Delay between requests to avoid rate limits
+
+print(f"Responses saved to {output_file}")

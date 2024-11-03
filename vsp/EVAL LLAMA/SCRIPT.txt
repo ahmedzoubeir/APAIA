@@ -1,0 +1,82 @@
+import time
+import pandas as pd
+from groq import Groq
+
+# Initialize the Groq client with API key directly
+api_key = "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"
+client = Groq(api_key=api_key)
+
+# Load the dataset
+input_file = "filtered_cve_descriptions_and_vectors.csv"
+df = pd.read_csv(input_file)
+
+# Define the static part of the prompt
+static_prompt = """Analyze the following CVE description and calculate the CVSS v3.1 Base Score. Determine the
+values for each base metric: AV, AC, PR, UI, S, C, I, and A. Summarize each metric’s value and
+provide the final CVSS v3.1 vector string.
+Valid options for each metric are as follows:
+- Attack Vector (AV): Network (N), Adjacent (A), Local (L), Physical (P)
+- Attack Complexity (AC): Low (L), High (H)
+- Privileges Required (PR): None (N), Low (L), High (H)
+- User Interaction (UI): None (N), Required (R)
+- Scope (S): Unchanged (U), Changed (C)
+- Confidentiality (C): None (N), Low (L), High (H)
+- Integrity (I): None (N), Low (L), High (H)
+- Availability (A): None (N), Low (L), High (H)
+Summarize each metric’s value and provide the final CVSS v3.1 vector string. Ensure the final line
+of your response contains only the CVSS v3 Vector String in the following format:
+Example format: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+CVE Description:"""
+
+# Add the Prompt column by concatenating the static prompt with the Description
+df['Prompt'] = df['Description'].apply(lambda desc: f"{static_prompt} {desc}")
+
+# Function to call Groq API and get a response
+def get_llama_response(prompt):
+    try:
+        # Create a streaming completion request
+        completion = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=1,
+            max_tokens=1024,
+            top_p=1,
+            stream=True,
+            stop=None,
+        )
+
+        # Collect the response chunks
+        response_text = ""
+        for chunk in completion:
+            response_text += chunk.choices[0].delta.content or ""
+
+        return response_text.strip()
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+# Iterate over each row and get Llama's response for the Prompt
+output_file = "llama_responses_vsp.csv"
+df['Llama_Response'] = None  # Add a new column to store responses
+
+for index, row in df.iterrows():
+    print(f"Processing row {index+1}/{len(df)}")
+    prompt = row['Prompt']
+    if pd.notna(prompt) and prompt.strip():
+        response = get_llama_response(prompt)
+        df.at[index, 'Llama_Response'] = response
+        print(f"Response for row {index+1}: {response}")  # Debug: Print response
+    else:
+        print(f"Row {index+1} has an empty or invalid prompt.")
+
+    # Save the current state of the dataframe to the output file
+    df.iloc[[index]].to_csv(output_file, mode='a', header=(index==0), index=False)  # Save the current row
+
+    time.sleep(4)  # Delay between requests to avoid rate limits
+
+print(f"Responses saved to {output_file}")

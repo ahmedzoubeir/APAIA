@@ -1,0 +1,97 @@
+import google.generativeai as genai
+import csv
+
+# Configure Gemini API
+gemini_key = 'your_gemini_api_key'  # Replace with your actual Gemini API key
+genai.configure(api_key=gemini_key)
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+# Function to process dataset and generate CWE IDs
+def generate_cwe_ids(input_csv, output_csv):
+    with open(input_csv, mode='r', encoding='utf-8') as infile, open(output_csv, mode='w', newline='', encoding='utf-8') as outfile:
+        reader = csv.DictReader(infile)
+        fieldnames = reader.fieldnames + ['Gemini_CWE_ID']
+        writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for row in reader:
+            description = row['Description']
+            prompt = f"""
+            You are a cybersecurity expert specializing in cyber threat intelligence. Analyze the following CVE description and map it to the appropriate CWE. Provide a brief justification for your choice. Ensure the last line of your response contains only the CWE ID.
+            CVE Description:
+            {description}
+            """
+            try:
+                response = model.generate_content(prompt, safety_settings="BLOCK_NONE")
+                gemini_cwe_id = response.text.strip()  # Assuming the API returns only the CWE ID on the last line
+            except Exception as e:
+                print(f"Error generating CWE ID for {row['URL']}: {e}")
+                gemini_cwe_id = "Error"
+
+            # Write the results to the output CSV
+            row['Gemini_CWE_ID'] = gemini_cwe_id
+            writer.writerow(row)
+
+# Example usage
+generate_cwe_ids('scraped_cve_descriptions.csv', 'cve_with_gemini_cwe.csv')
+
+
+
+
+
+
+--------------------------------
+
+
+
+
+
+import csv
+import google.generativeai as genai
+
+# Configure Gemini API
+gemini_key = 'your_gemini_api_key'  # Replace with your actual Gemini API key
+genai.configure(api_key=gemini_key)
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+# Load the dataset
+input_file = 'cve_descriptions_combined.csv'
+output_file = 'cve_descriptions_with_gemini_cwe.csv'
+
+def get_gemini_cwe_id(description, prompt):
+    try:
+        response = model.generate_text(
+            prompt=prompt,
+            temperature=0.7,
+            max_output_tokens=256,
+        )
+        # Assume the last line of the response contains only the CWE ID
+        gemini_cwe_id = response.generated_text.strip().splitlines()[-1]
+        return gemini_cwe_id
+    except Exception as e:
+        print(f"Error calling Gemini API: {e}")
+        return "Error"
+
+# Read the dataset, call Gemini API, and write the updated dataset
+with open(input_file, 'r', newline='', encoding='utf-8') as infile, \
+     open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+
+    reader = csv.DictReader(infile)
+    fieldnames = reader.fieldnames + ['Gemini_CWE_ID', 'Comparison']  # Add new columns
+    writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+
+    writer.writeheader()  # Write the header
+
+    for row in reader:
+        description = row['Description']
+        prompt = row['Prompt']
+
+        gemini_cwe_id = get_gemini_cwe_id(description, prompt)
+        row['Gemini_CWE_ID'] = gemini_cwe_id
+        row['Comparison'] = 'Match' if gemini_cwe_id == row['CWE_ID'] else 'Mismatch'
+
+        writer.writerow(row)
+
+        print(f"Processed CVE from {row['URL']}: Scraped CWE: {row['CWE_ID']}, Gemini CWE: {gemini_cwe_id}")
+
+print(f"Updated dataset saved to {output_file}.")

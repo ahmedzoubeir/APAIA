@@ -1,0 +1,69 @@
+import time
+import pandas as pd
+import google.generativeai as genai
+import itertools
+
+# List of your API keys
+api_keys = itertools.cycle([
+    "AIzaSyDNaD1B9hYOFfGfjy6ofcXMX2jjvGgWCQo",
+    "AIzaSyC-VpLI0xSt8-5fGWMvzyKJ_cJMWafOsBg",
+    "AIzaSyCGFJQqWZvIHb29wLcvzEKRAITBia73ycM"
+    # Add more keys if available
+])
+
+
+# Configure the initial API key
+current_key = next(api_keys)
+genai.configure(api_key=current_key)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+# Load the dataset
+input_file = "cve_rcm_filtered.csv"
+df = pd.read_csv(input_file)
+
+# Function to switch to the next API key
+def switch_api_key():
+    global current_key
+    current_key = next(api_keys)
+    genai.configure(api_key=current_key)
+    print(f"Switched to new API key: {current_key}")
+
+# Function to call Gemini API and get a response
+def get_gemini_response(prompt):
+    try:
+        print(f"Using API key: {current_key}")
+        # Refined prompt to ensure CWE ID extraction
+        refined_prompt = f"""
+        You are a cybersecurity expert. Given the following vulnerability description, please identify the CWE ID associated with the vulnerability. Provide the CWE ID and a brief explanation.
+        Description: {prompt}
+        """
+        print(f"Prompt: {refined_prompt[:100]}...")  # Log the first 100 characters of the prompt for inspection
+        response = model.generate_content(refined_prompt, safety_settings="BLOCK_NONE")
+        print("Full response:", response)  # Log the full response for better diagnostics
+        if response and response.candidates:
+            # Extract the text from the first candidate
+            return response.candidates[0].content.parts[0].text.strip()
+        else:
+            print("No candidates found in the response.")
+            return None
+    except Exception as e:
+        if "quota" in str(e).lower() or "resource has been exhausted" in str(e).lower():
+            print("Quota exceeded. Switching API key.")
+            switch_api_key()  # Switch to the next API key
+            time.sleep(5)  # Slight delay before retrying with new key
+            return get_gemini_response(prompt)  # Retry with a new key
+        else:
+            print(f"Error: {e}")
+            return None
+
+# Iterate over each row and get Gemini's response for the Prompt
+output_file = "gemini_responses_rcm.csv"
+for index, row in df.iterrows():
+    print(f"Processing row {index+1}/{len(df)}")
+    prompt = row['Prompt']
+    response = get_gemini_response(prompt)
+    df.at[index, 'Gemini_Response'] = response
+    df.iloc[[index]].to_csv(output_file, mode='a', header=(index==0), index=False)  # Save the current row
+    time.sleep(4)  # Delay between requests to avoid rate limits
+
+print(f"Responses saved to {output_file}")

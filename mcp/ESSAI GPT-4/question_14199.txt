@@ -1,0 +1,49 @@
+**Question 1:**
+MITRE ATT&CK Framework considers which of the following as a consequence of Origin Validation Errors?
+(A) Execution of Arbitrary Code
+(B) Privilege Escalation
+(C) Information Disclosure
+(D) Data Manipulation
+
+**Answer: B**
+Explanation: Origin Validation Errors can lead to successful impersonation by an attacker, which is mapped to the MITRE ATT&CK framework technique T1035: Privilege Escalation.
+
+**Question 2:**
+Which of the following MITRE ATT&CK Platform is most vulnerable to Origin Validation Errors?
+(A) Enterprise
+(B) ICS
+(C) Mobile
+(D) All of the above
+
+**Answer: D**
+Explanation: Origin Validation Errors apply to all three MITRE ATT&CK platforms: Enterprise, ICS, and Mobile.
+
+**Question 3:**
+According to the document provided, which of the following is NOT a tool or framework mentioned for managing Cybersecurity?
+(A) NIST Cybersecurity Framework
+(B) NIST Risk Management Framework
+(C) MITRE ATT&CK Framework
+(D) Privacy Framework
+
+**Answer: C**
+Explanation: The provided document lists the NIST Cybersecurity Framework, Risk Management Framework, and Privacy Framework as tools and frameworks for Cybersecurity management, but does not mention the MITRE ATT&CK Framework.
+
+**Question 4:**
+Which of the following is a specific mode of introduction for Origin Validation Errors?
+(A) Design Flaw
+(B) Implementation Flaw
+(C) Configuration Error
+(D) Implementation REALIZATION
+
+**Answer: D**
+Explanation: The document identifies REALIZATION as a specific mode of introduction for Origin Validation Errors, indicating that the weakness is introduced during the implementation of an architectural security tactic.
+
+**Question 5:**
+How does an Origin Validation Error relate to the MITRE ATT&CK technique T1034: Repeated Access?
+(A) Origin Validation Errors are a prerequisite for T1034.
+(B) T1034 is a technique used to mitigate Origin Validation Errors.
+(C) Origin Validation Errors and T1034 are independent issues.
+(D) T1034 is a consequence of Origin Validation Errors.
+
+**Answer: C**
+Explanation: Origin Validation Errors and T1034 are independent issues. T1034 involves repeated access to information resources, while Origin Validation Errors are about validating the source of data or communication.

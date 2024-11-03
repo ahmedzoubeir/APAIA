@@ -1,0 +1,116 @@
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+def scrape_content(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        paragraphs = soup.find_all('p')
+        content = ' '.join([para.get_text() for para in paragraphs])
+        return content
+    else:
+        print(f"Failed to retrieve content from {url}")
+        return None
+
+def generate_mcqs(content, api_key):
+    import google.generativeai as genai
+
+    prompt = """
+    You are a cybersecurity expert specializing in cyber threat intelligence. Given the text below, please generate a maximum of 5 multiple-choice questions with four possible options each.
+    Follow these requirements:
+    1. Question Format: Each question must have four options. The options should be challenging and require careful consideration. Avoid creating options that could be interpreted as correct under different circumstances.
+    2. Target Audience: The questions should be suitable for security professionals with three to five years of experience in cyber threat intelligence. Avoid generic questions such as “What is the objective?”, “Which operating system can be targeted?”.
+    3. Content Coverage: Aim to cover various sections of the document to ensure a comprehensive evaluation of the candidate’s knowledge. Include context-specific questions that require an understanding of the document’s content.
+    4. Technical Precision: Use precise terminology and concepts relevant to cyber threat intelligence. Incorporate situational or scenario-based questions where applicable.
+    5. Include Technique IDs and Names: Ensure that all questions, where applicable, mention both the ID and the full name of the MITRE ATT&CK pattern technique.
+    6. Premise Inclusion: Each question should include a premise indicating it pertains to MITRE ATT&CK, specifying the relevant platform (Enterprise, ICS, or Mobile) where necessary.
+    7. Output Format: Return the output in TSV format (must be tab-separated) with the following columns: Question, Option A, Option B, Option C, Option D, Correct Answer (A, B, C, D), and Explanation.
+    Important: Only return the TSV content as specified. Do not include any additional text or commentary outside the TSV format.
+    Text: {}
+    """.format(content)
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+
+    response = model.generate_content(prompt)
+    if response.candidates and len(response.candidates) > 0:
+        generated_text = response.candidates[0].content.parts[0].text
+        return generated_text.strip()
+    else:
+        return None
+
+def main(urls, api_keys):
+    results = []
+
+    for url in urls:
+        print(f"Processing URL: {url}")
+        content = scrape_content(url)
+        if content:
+            for api_key in api_keys:
+                try:
+                    mcqs = generate_mcqs(content, api_key)
+                    if mcqs:
+                        results.append({'URL': url, 'MCQs': mcqs})
+                        break  # Exit the loop after successful generation
+                except Exception as e:
+                    print(f"Error with API key {api_key}: {e}")
+                    continue
+
+    # Save the results to a TSV file
+    with open('QCMS2.tsv', 'w') as file:
+        for result in results:
+            url = result['URL']
+            mcqs = result['MCQs']
+            for mcq in mcqs.split('\n'):
+                file.write(f"{url}\t{mcq}\n")
+
+if __name__ == "__main__":
+  urls = ["https://cwe.mitre.org/data/definitions/1293.html",
+"https://cwe.mitre.org/data/definitions/495.html",
+"https://cwe.mitre.org/data/definitions/794.html",
+"https://cwe.mitre.org/data/definitions/579.html",
+"https://cwe.mitre.org/data/definitions/1294.html",
+"https://cwe.mitre.org/data/definitions/1292.html",
+"https://cwe.mitre.org/data/definitions/270.html",
+"https://cwe.mitre.org/data/definitions/694.html",
+"https://cwe.mitre.org/data/definitions/286.html",
+"https://cwe.mitre.org/data/definitions/523.html",
+"https://cwe.mitre.org/data/definitions/570.html",
+"https://cwe.mitre.org/data/definitions/65.html",
+"https://cwe.mitre.org/data/definitions/147.html",
+"https://cwe.mitre.org/data/definitions/350.html",
+"https://cwe.mitre.org/data/definitions/426.html",
+"https://cwe.mitre.org/data/definitions/636.html",
+"https://cwe.mitre.org/data/definitions/1394.html",
+"https://cwe.mitre.org/data/definitions/73.html",
+"https://cwe.mitre.org/data/definitions/336.html",
+"https://cwe.mitre.org/data/definitions/293.html",
+"https://cwe.mitre.org/data/definitions/509.html",
+"https://cwe.mitre.org/data/definitions/347.html",
+"https://cwe.mitre.org/data/definitions/1242.html",
+"https://cwe.mitre.org/data/definitions/1233.html",
+"https://cwe.mitre.org/data/definitions/170.html",
+"https://cwe.mitre.org/data/definitions/130.html",
+"https://cwe.mitre.org/data/definitions/1335.html",
+"https://cwe.mitre.org/data/definitions/36.html",
+"https://cwe.mitre.org/data/definitions/1193.html,"
+"https://cwe.mitre.org/data/definitions/1269.html",
+"https://cwe.mitre.org/data/definitions/1061.html",
+"https://cwe.mitre.org/data/definitions/756.html",
+"https://cwe.mitre.org/data/definitions/268.html",
+"https://cwe.mitre.org/data/definitions/546.html",
+"https://cwe.mitre.org/data/definitions/535.html",
+"https://cwe.mitre.org/data/definitions/150.html"]
+
+# List of API keys to use
+  api_keys = [
+    "AIzaSyAACFv3LRrnre1Mipw-9xzacNWftJ_cQgg",
+    "AIzaSyADIiOvPSDoIDqoVxTJ-Qi9MEsj09HlGes",
+    "AIzaSyD5rrBkT6dtPE03jRPPFVbyogdtfOv68JM",
+    "AIzaSyDKvfpLUlOvygLSLpAWphd2yn7k24_M2MA",
+    "AIzaSyBG6O1fFig9nfHtoOcV5PO_8xZMPo-vO7o"
+]
+
+  main(urls, api_keys)

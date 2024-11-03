@@ -1,0 +1,79 @@
+**Question 1**
+
+**Premise:** MITRE ATT&CK Enterprise
+
+**Question:** Which MITRE ATT&CK pattern technique relates to an attacker exploiting a software vulnerability to execute malicious code?
+
+**Options:**
+A. Command and Scripting Interpreter
+B. Exfiltration Over Command and Control Channel
+C. Exploitation for Client Execution
+D. Lateral Movement
+
+**Correct Answer:** C
+
+**Explanation:** The Exploitation for Client Execution technique (T1203) involves exploiting a vulnerability in a client-side application to execute attacker-controlled code.
+
+**Question 2**
+
+**Premise:** MITRE ATT&CK ICS
+
+**Question:** What is a type of communication protocol that is commonly used for industrial control systems and is vulnerable to the exploitation of an origin validation error?
+
+**Options:**
+A. Modbus
+B. CAN bus
+C. Wi-Fi
+D. Bluetooth
+
+**Correct Answer:** A
+
+**Explanation:** Modbus is a widely used communication protocol for industrial control systems that lacks strong authentication mechanisms, making it susceptible to origin validation errors.
+
+**Question 3**
+
+**Premise:** MITRE ATT&CK Mobile
+
+**Question:** Which of the following is a security control that can help mitigate the risk of origin validation errors on mobile devices?
+
+**Options:**
+A. Application sandboxing
+B. SMS authentication
+C. Root certificate validation
+D. Firewall
+
+**Correct Answer:** A
+
+**Explanation:** Application sandboxing limits the privileges of individual applications, reducing the impact of an origin validation error that allows an attacker to execute malicious code.
+
+**Question 4**
+
+**Premise:** MITRE ATT&CK Enterprise
+
+**Question:** What is a potential consequence of an origin validation error in the context of cryptographic operations?
+
+**Options:**
+A. Incorrect signature verification
+B. Denial of service
+C. Unauthorized access to data
+D. Loss of confidentiality
+
+**Correct Answer:** A
+
+**Explanation:** Origin validation errors in cryptographic operations can lead to incorrect signature verification, allowing an attacker to bypass security mechanisms.
+
+**Question 5**
+
+**Premise:** MITRE ATT&CK ICS
+
+**Question:** Which type of malicious software typically exploits origin validation errors in ICS environments?
+
+**Options:**
+A. Worms
+B. Botnets
+C. Logic bombs
+D. Rootkits
+
+**Correct Answer:** A
+
+**Explanation:** Worms are self-propagating malware that can exploit origin validation errors in ICS networks to spread and infect other systems.

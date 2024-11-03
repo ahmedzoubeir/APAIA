@@ -1,0 +1,45 @@
+import requests
+from bs4 import BeautifulSoup
+import csv
+import time
+
+def extract_description_and_vector(url):
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Extract description
+        description_tag = soup.find("p", {"data-testid": "vuln-description"})
+        description = description_tag.text.strip() if description_tag else "No description found"
+
+        # Extract vector from the tooltipCvss3CnaMetrics class
+        vector_tag = soup.find("span", {"class": "tooltipCvss3CnaMetrics"})
+        vector = vector_tag.text.strip() if vector_tag else "No vector found"
+
+        return description, vector
+    except Exception as e:
+        print(f"Error fetching data from {url}: {e}")
+        return "No description found", "No vector found"
+
+def save_descriptions_and_vectors_to_csv(start, end):
+    with open('cve_descriptions_and_vectors.csv', mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['URL', 'Description', 'Vector'])  # Header
+
+    for i in range(start, end + 1):
+        cve_id = f"{i:04d}"  # Format CVE ID with leading zeros
+        url = f"https://nvd.nist.gov/vuln/detail/CVE-2024-{cve_id}"
+        print(f"Processing {url}...")
+
+        description, vector = extract_description_and_vector(url)
+        print(f"Description: {description[:100]}... | Vector: {vector}")
+
+        with open('cve_descriptions_and_vectors.csv', mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow([url, description, vector])
+
+        time.sleep(3)  # Slight delay to avoid rate limiting
+
+# Example usage
+save_descriptions_and_vectors_to_csv(20300, 25001)  # Adjust the range as needed

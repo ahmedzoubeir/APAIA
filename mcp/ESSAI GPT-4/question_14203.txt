@@ -1,0 +1,49 @@
+**Question 1:**
+Which of the following MITRE ATT&CK pattern techniques is closely associated with CWE-346?
+(A) T1133: External Remote Services
+(B) T1144: Process Injection
+(C) T1036: Masquerading
+(D) T1532: Credential Access
+
+**Option A: (A)**
+**Explanation:** T1133 (External Remote Services) involves using external services hosted on another system to achieve a goal. CWE-346 describes a weakness in validating the source of data or communication, making it vulnerable to exploitation through remote services.
+
+**Question 2:**
+NIST's Privacy Framework is a tool designed for which purpose?
+(A) Managing cybersecurity risks in critical infrastructure
+(B) Improving privacy through enterprise risk management
+(C) Integrating cybersecurity and enterprise risk management
+(D) Automating the assessment of supply chain vendors
+
+**Option B: (B)**
+**Explanation:** The Privacy Framework helps organizations manage privacy risks by providing a common language and building blocks for policies and technical capabilities. It is not primarily intended for cybersecurity or critical infrastructure risk management.
+
+**Question 3:**
+In the context of MITRE ATT&CK Enterprise, which of the following platforms is specifically targeted by T1589: Microphone Capture?
+(A) Cloud
+(B) Mobile
+(C) Enterprise
+(D) ICS
+
+**Option C: (C)**
+**Explanation:** T1589: Microphone Capture is an Enterprise-specific technique that involves capturing audio input from a victim's microphone. It is not applicable to Cloud, Mobile, or ICS platforms.
+
+**Question 4:**
+According to the NIST Cybersecurity Framework, which of the following is a key function used to assess and manage cybersecurity risks?
+(A) Detect
+(B) Protect
+(C) Recover
+(D) Analyze
+
+**Option A: (A)**
+**Explanation:** The NIST Cybersecurity Framework identifies five key functions: Identify, Protect, Detect, Respond, and Recover. Detection involves continuous monitoring and analysis to identify and respond to cybersecurity threats.
+
+**Question 5:**
+CWE-940, Improper Verification of Source of a Communication Channel, is a weakness that can lead to:
+(A) Denial of service attacks
+(B) Data manipulation
+(C) Privilege escalation
+(D) Unauthorized access to resources
+
+**Option D: (D)**
+**Explanation:** CWE-940 involves failing to verify the source of a communication channel, which can allow unauthorized parties to gain access to resources or perform malicious actions. It is not typically associated with denial of service, data manipulation, or privilege escalation vulnerabilities.

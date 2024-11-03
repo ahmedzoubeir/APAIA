@@ -1,0 +1,79 @@
+**Question 1:**
+
+**Premise:** NIST Cybersecurity Framework (CSF)
+
+Which of the following is NOT a function of the NIST CSF?
+
+**Options:**
+A. Identify
+B. Protect
+C. Respond
+D. Verify
+
+**Correct Answer:** D
+
+**Explanation:** NIST CSF has five functions: Identify, Protect, Detect, Respond, and Recover. Verify is not a NIST CSF function.
+
+**Question 2:**
+
+**Premise:** Risk Management Framework (RMF)
+
+Which of the following is a key concept incorporated into the updated RMF?
+
+**Options:**
+A. Artificial intelligence risk management
+B. Cybersecurity Framework principles
+C. Supply chain risk management
+D. Cloud computing best practices
+
+**Correct Answer:** B
+
+**Explanation:** The updated RMF incorporated Cybersecurity Framework (CSF) principles, not artificial intelligence risk management, supply chain risk management, or cloud computing best practices.
+
+**Question 3:**
+
+**Premise:** CWE-ID 346
+
+Which of the following is a common consequence of CVE-346?
+
+**Options:**
+A. Gain control of user accounts
+B. Denial of service
+C. Information disclosure
+D. Modification of software
+
+**Correct Answer:** A
+
+**Explanation:** CVE-346 involves Origin Validation Error, which can lead to attackers gaining control of user accounts, not denial of service, information disclosure, or modification of software.
+
+**Question 4:**
+
+**Premise:** Integrating Cybersecurity and Enterprise Risk Management (ERM)
+
+Which of the following is an advantage of integrating cybersecurity risk management with ERM?
+
+**Options:**
+A. Reduces the complexity of risk management
+B. Improves alignment with organizational objectives
+C. Eliminates the need for separate cybersecurity and ERM programs
+D. Provides a quantitative measure of cybersecurity risk
+
+**Correct Answer:** B
+
+**Explanation:** Integrating cybersecurity risk management with ERM improves alignment with organizational objectives by considering cybersecurity risks within the broader enterprise risk context.
+
+**Question 5:**
+
+**Premise:** NIST Cybersecurity Supply Chain Risk Management (C-SCRM)
+
+Which of the following is NOT a component of NIST C-SCRM?
+
+**Options:**
+A. Cybersecurity risk assessment
+B. Supply chain management practices
+C. Emerging technology analysis
+D. Third-party risk management
+
+**Correct Answer:** C
+
+**Explanation:** NIST C-SCRM does not include emerging technology analysis as a component. It focuses on cybersecurity risk assessment, supply chain management practices, and third-party risk management.

@@ -1,0 +1,74 @@
+**Question 1:**
+
+**MITRE ATT&CK Platform:** Enterprise
+**ATT&CK ID and Name:** T1400: Web Server Misconfiguration
+
+In an enterprise environment, which of the following actions would mitigate this technique?
+
+**Option A:** Enforcing access control lists for web server files
+**Option B:** Implementing intrusion detection systems
+**Option C:** Enabling a web application firewall
+**Option D:** Updating the web server software
+
+**Correct Answer:** A
+**Explanation:** Enforcing access control lists for web server files restricts access to authorized users, mitigating the risk of unauthorized access and modification of web server files.
+
+**Question 2:**
+
+**MITRE ATT&CK Platform:** Mobile
+**ATT&CK ID and Name:** T1201: Password Cracking
+
+Which of the following countermeasures is most effective in mitigating this technique on mobile devices?
+
+**Option A:** Enforcing strong password policies
+**Option B:** Implementing two-factor authentication
+**Option C:** Encrypting sensitive data
+**Option D:** Updating the mobile operating system
+
+**Correct Answer:** A
+**Explanation:** Enforcing strong password policies increases the difficulty of successful password cracking attempts by requiring complex passwords with a minimum length.
+
+**Question 3:**
+
+**MITRE ATT&CK Platform:** Enterprise
+**ATT&CK ID and Name:** T1140: Phishing
+
+Which of the following indicators can help detect phishing emails?
+
+**Option A:** Unusual sender email addresses
+**Option B:** Misspelled or malformed links
+**Option C:** Requests for personal or financial information
+**Option D:** All of the above
+
+**Correct Answer:** D
+**Explanation:** All of the provided indicators, including unusual sender email addresses, misspelled or malformed links, and requests for personal or financial information, are common characteristics of phishing emails.
+
+**Question 4:**
+
+**MITRE ATT&CK Platform:** ICS
+**ATT&CK ID and Name:** T1051.002: Modify Programmable Logic Controller (PLC) Logic
+
+Which of the following security controls can help prevent unauthorized modification of PLC logic?
+
+**Option A:** Implementing access control mechanisms
+**Option B:** Regularly monitoring system logs for suspicious activity
+**Option C:** Using intrusion detection systems to detect potential attacks
+**Option D:** Encrypting PLC traffic
+
+**Correct Answer:** A
+**Explanation:** Implementing access control mechanisms to restrict access to the PLC and its programming environment is a primary measure to prevent unauthorized modification of PLC logic.
+
+**Question 5:**
+
+**MITRE ATT&CK Platform:** All Platforms
+**ATT&CK ID and Name:** T1569: Keystroke Logging
+
+Which of the following techniques can be used to detect keystroke logging?
+
+**Option A:** Behavioral analysis
+**Option B:** Signature-based detection
+**Option C:** Anomaly-based detection
+**Option D:** All of the above
+
+**Correct Answer:** D
+**Explanation:** Behavioral analysis, signature-based detection, and anomaly-based detection are all techniques that can be employed to identify keystroke logging activity, as they monitor for suspicious patterns and deviations from normal behavior.

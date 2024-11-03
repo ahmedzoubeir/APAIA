@@ -1,0 +1,74 @@
+**Question 1:**
+
+According to MITRE ATT&CK for Enterprise, which technique ID relates to the failure to validate the origin of a communication channel?
+
+**Options:**
+
+A. T1134
+B. T1110
+C. T1112
+D. T1121
+
+**Correct Answer:** B
+
+**Explanation:** T1110 (Origin Validation Error) describes the technique of not properly validating the source of a communication channel.
+
+**Question 2:**
+
+In the context of Cybersecurity Supply Chain Risk Management (C-SCRM), what is a common risk related to the reliance on third-party vendors?
+
+**Options:**
+
+A. Misconfiguration of critical assets
+B. Introduction of compromised software
+C. Unauthorized access to sensitive data
+D. Denial of service attacks
+
+**Correct Answer:** B
+
+**Explanation:** C-SCRM focuses on addressing risks associated with the integration of third-party vendors, including the introduction of compromised software from untrustworthy sources.
+
+**Question 3:**
+
+Which of the following is a key feature of the NIST Risk Management Framework (RMF)?
+
+**Options:**
+
+A. It is exclusively designed for federal agencies
+B. It focuses on privacy risk management
+C. It supports continuous monitoring
+D. It requires independent audits
+
+**Correct Answer:** C
+
+**Explanation:** The RMF emphasizes continuous monitoring as a critical component of risk management, ensuring ongoing protection of systems.
+
+**Question 4:**
+
+According to NIST's Privacy Framework, what is the primary goal of data processing activities?
+
+**Options:**
+
+A. To minimize the collection of personal data
+B. To prevent security incidents
+C. To enable data monetization
+D. To comply with regulatory requirements
+
+**Correct Answer:** A
+
+**Explanation:** The Privacy Framework prioritizes minimizing the collection and processing of personal data, safeguarding individuals' privacy rights.
+
+**Question 5:**
+
+Which of the following is a common consequence of an origin validation error vulnerability?
+
+**Options:**
+
+A. Gaining access to sensitive information
+B. Escalating privileges to an unauthorized level
+C. Executing arbitrary code on the target system
+D. Disrupting system availability
+
+**Correct Answer:** A
+
+**Explanation:** An origin validation error vulnerability can allow an attacker to access data or resources that were not intended to be available, such as sensitive information or personally identifiable information (PII).

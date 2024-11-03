@@ -1,0 +1,83 @@
+**Question 1**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Question:** Which of the following MITRE ATT&CK techniques involves failing to verify the authenticity of data?
+
+**Options:**
+A. T1132: Origin Validation Error
+B. T1190: Exploit Public-Facing Application
+C. T1204: User Execution via File and Directory Manipulation
+D. T1136: Create Account
+
+**Correct Answer:** A
+
+**Explanation:** T1132: Origin Validation Error is the MITRE ATT&CK technique that involves failing to verify the authenticity of data, such as source or communication channel.
+
+
+**Question 2**
+
+**MITRE ATT&CK Platform:** ICS
+
+**Question:** Which of the following is a potential consequence of an origin validation error in an ICS system?
+
+**Options:**
+A. Gain Unauthorized Device Access
+B. Manipulate Process Control Data
+C. Disrupt System Availability
+D. All of the above
+
+**Correct Answer:** D
+
+**Explanation:** Origin validation errors can lead to various consequences in ICS systems, including unauthorized device access, manipulation of process control data, and disruption of system availability.
+
+
+**Question 3**
+
+**MITRE ATT&CK Platform:** Mobile
+
+**Question:** Which of the following is a common demonstrative example of an origin validation error in mobile applications?
+
+**Options:**
+A. Allowing an untrusted application to remove user accounts
+B. Failing to check the source of intents
+C. Accepting unauthenticated network connections
+D. Trusting user input without proper validation
+
+**Correct Answer:** B
+
+**Explanation:** Failing to check the source of intents is a common example of an origin validation error in mobile applications, as it allows malicious applications to access sensitive data or bypass security restrictions.
+
+
+**Question 4**
+
+**MITRE ATT&CK Platform:** Enterprise
+
+**Question:** Which of the following tools can assist organizations in identifying and mitigating origin validation errors?
+
+**Options:**
+A. Static code analysis tools
+B. Network intrusion detection systems
+C. Vulnerability management systems
+D. Threat intelligence feeds
+
+**Correct Answer:** A
+
+**Explanation:** Static code analysis tools can identify potential origin validation errors by examining the source code and checking for instances where data authenticity is not properly verified.
+
+
+**Question 5**
+
+**MITRE ATT&CK Platform:** ICS
+
+**Question:** Which of the following best practices can help prevent origin validation errors in ICS systems?
+
+**Options:**
+A. Using strong authentication mechanisms
+B. Implementing input validation and sanitization
+C. Verifying the source of incoming messages
+D. All of the above
+
+**Correct Answer:** D
+
+**Explanation:** A combination of strong authentication, input validation and sanitization, and verification of incoming message sources can help prevent origin validation errors and protect ICS systems from malicious attacks.

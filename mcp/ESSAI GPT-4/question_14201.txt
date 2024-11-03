@@ -1,0 +1,59 @@
+**Question 1:**
+
+[Enterprise Context] Per MITRE ATT&CK, which of the following is a potential consequence of an Origin Validation Error in an enterprise network?
+
+(A) Unauthorized privilege escalation
+(B) Data exfiltration
+(C) Denial of service
+(D) System malfunction
+
+**Correct Answer:** A
+**Explanation:** Origin Validation Errors can allow an attacker to assume an unauthorized identity and escalate privileges within the network.
+
+**Question 2:**
+
+[ICS Context] According to MITRE ATT&CK for ICS, Origin Validation Errors can lead to which of the following scenarios?
+
+(A) Manipulating industrial control processes
+(B) Disrupting physical safety systems
+(C) Altering production schedules
+(D) Intercepting sensitive communications
+
+**Correct Answer:** C
+**Explanation:** Origin Validation Errors in ICS systems can enable attackers to modify production schedules, potentially causing operational disruptions.
+
+**Question 3:**
+
+[Mobile Context] Which MITRE ATT&CK pattern technique is associated with Origin Validation Errors on mobile devices?
+
+(A) T1015: Lateral Movement - WLAN Bridging
+(B) T1135: Inhibit System Recovery - Disable or Modify Recovery Mode
+(C) T1569: Application Layer Protocol - Execution
+(D) T1190: Exploit Weakness in Server Software - Web
+
+**Correct Answer:** C
+**Explanation:** T1569 involves executing malicious code on a device through an application's API, which can be leveraged to exploit Origin Validation Errors in mobile applications.
+
+**Question 4:**
+
+[Enterprise Context] Identify the key element that an Origin Validation Error typically fails to perform properly.
+
+(A) Encryption
+(B) Authentication
+(C) Data validation
+(D) Access control
+
+**Correct Answer:** B
+**Explanation:** Origin Validation Errors occur when a system fails to authenticate the origin of data or communication, leading to potential security breaches.
+
+**Question 5:**
+
+[ICS Context] What is a common strategy to mitigate the risks associated with Origin Validation Errors in ICS systems?
+
+(A) Implementing strict access controls
+(B) Using encryption for data transmission
+(C) Regularly updating firmware and software
+(D) Enforcing strong password policies
+
+**Correct Answer:** A
+**Explanation:** Implementing strong access controls helps prevent unauthorized access to ICS systems, reducing the likelihood of exploiting Origin Validation Errors.
